@@ -6,7 +6,7 @@ const { connectDB } = require("./configs/connect-db");
 // create web server using express
 const app = express();
 
-// define port
+// port
 const PORT = process.env.PORT || 6000;
 
 // establish database connection

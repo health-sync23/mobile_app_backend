@@ -1,5 +1,5 @@
 const express = require("express");
-const { enrollNewPatient } = require("../../handlers/enroll-handler");
+const { enrollNewPatient } = require("../../handlers/patient/enroll-handler");
 // create router using express
 const router = express.Router();
 

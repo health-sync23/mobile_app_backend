@@ -1,4 +1,8 @@
-const Patient = require("../models/Patient");
+const Patient = require("../../models/Patient");
+
+const { clientError, serverError } = require("../../utils/returnError");
+
+// const Patient = require("../models/Patient");
 const bcrypt = require("bcryptjs");
 
 const enrollNewPatient = async (req, res) => {
@@ -7,9 +11,7 @@ const enrollNewPatient = async (req, res) => {
 
   //   check if the correct data is being sent
   if (!fullname || !email || !password)
-    return res
-      .status(400)
-      .json({ message: "Important fields cannot be empty!" });
+    return clientError(res, "Important fields cannot be empty!");
 
   //   check for email duplicate
   const duplicateEmail = await Patient.findOne({ email }).exec();
@@ -39,9 +41,7 @@ const enrollNewPatient = async (req, res) => {
   } catch (error) {
     // if there are any errors return error response
     console.log(error);
-    res
-      .status(500)
-      .json({ message: "An error occured. Please try again later" });
+    serverError(res);
   }
 };
 

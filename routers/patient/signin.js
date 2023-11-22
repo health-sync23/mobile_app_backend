@@ -1,5 +1,7 @@
 const express = require("express");
-const { loginPatient } = require("../../handlers/patient-login-handler");
+const {
+  loginPatient,
+} = require("../../handlers/patient/patient-login-handler");
 // create router using express
 const router = express.Router();
 

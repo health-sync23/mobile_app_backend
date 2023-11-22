@@ -1,4 +1,9 @@
-const Patient = require("../models/Patient");
+const { clientError } = require("../../utils/returnError");
+
+const { serverError } = require("../../utils/returnError");
+
+const Patient = require("../../models/Patient");
+
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 
@@ -8,13 +13,13 @@ const loginPatient = async (req, res) => {
 
   //   check if data is not empty
   if (!email || !password)
-    return res.status(400).json({ message: "Enter your email AND password!" });
+    return clientError(res, "Enter your email AND password!");
 
   // check if user exist in database
   const user = await Patient.findOne({ email }).exec();
 
   if (!user) {
-    return res.status(400).json({ message: "User does not exist!" });
+    return clientError(res, "User does not exist!");
   } else {
     try {
       // check if the provided password and the user password matches
@@ -56,9 +61,7 @@ const loginPatient = async (req, res) => {
       res.status(200).json({ token: accessToken, message: "Login successful" });
     } catch (error) {
       console.log(error);
-      res
-        .status(500)
-        .json({ message: "An error occured, Please try again later" });
+      serverError(res);
     }
   }
 };

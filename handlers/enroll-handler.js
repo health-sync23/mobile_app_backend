@@ -26,6 +26,7 @@ const enrollNewPatient = async (req, res) => {
       email: email,
       password: hashedPass,
       profile_pic: null,
+      refreshToken: null,
     };
 
     // save new patient to db

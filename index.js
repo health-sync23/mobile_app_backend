@@ -21,6 +21,7 @@ app.use(cookieParser());
 // enpoints
 app.use("/", require("./routers/root"));
 app.use("/new-patient", require("./routers/patient/patient-router"));
+app.use("/signin", require("./routers/patient/signin"));
 
 // start server once database is connected
 mongoose.connection.once("open", () => {

@@ -4,6 +4,11 @@ const { format } = require("date-fns");
 const Schema = mongoose.Schema;
 
 const reminderSchema = new Schema({
+  patient: {
+    type: Schema.Types.ObjectId,
+    ref: "Patient",
+    required: true,
+  },
   drug_name: {
     type: String,
     required: true,
@@ -33,7 +38,7 @@ const reminderSchema = new Schema({
   },
   created_at: {
     type: String,
-    default: () => format(new Date(), "YYYY/MM/DD"),
+    default: () => format(new Date(), "yyyy/MM/dd"),
   },
 });
 

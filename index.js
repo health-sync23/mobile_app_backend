@@ -1,3 +1,5 @@
+const { verifyJWT } = require("./middlewares/verify-jwt");
+
 const mongoose = require("mongoose");
 const express = require("express");
 require("dotenv").config();
@@ -19,9 +21,15 @@ app.use(express.json());
 app.use(cookieParser());
 
 // enpoints
-app.use("/", require("./routers/root"));
-app.use("/new-patient", require("./routers/patient/patient-router"));
-app.use("/signin", require("./routers/patient/signin"));
+app.use("/", require("./routes/root"));
+app.use("/new-patient", require("./routes/patient/signup"));
+app.use("/signin", require("./routes/patient/signin"));
+app.use("/patient", require("./routes/patient/patient"));
+
+app.use(verifyJWT);
+
+app.use("/reminder", require("./routes/patient/reminder"));
+// app.use("/reminders", require("./routes/patient/reminder"));
 
 // start server once database is connected
 mongoose.connection.once("open", () => {

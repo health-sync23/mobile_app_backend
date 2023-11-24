@@ -30,6 +30,7 @@ const loginPatient = async (req, res) => {
       // create access token for user
       const accessToken = jwt.sign(
         {
+          userId: user._id,
           user: user.email,
         },
         process.env.ACCESS_TOKEN,
@@ -38,6 +39,7 @@ const loginPatient = async (req, res) => {
       // create refresh token for user
       const refreshToken = jwt.sign(
         {
+          userId: user._id,
           user: user.email,
         },
         process.env.REFRESH_TOKEN,

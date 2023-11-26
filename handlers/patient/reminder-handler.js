@@ -41,11 +41,9 @@ const getPatientReminders = async (req, res) => {
 
   // Validate that the logged-in user is the same as the requested user
   if (loggedInUserId !== requestedUserId) {
-    return res
-      .status(403)
-      .json({
-        message: "Access forbidden. You can only retrieve your own reminders.",
-      });
+    return res.status(403).json({
+      message: "Access forbidden. You can only retrieve your own reminders.",
+    });
   }
 
   try {
@@ -53,8 +51,10 @@ const getPatientReminders = async (req, res) => {
       patient: loggedInUserId,
     }).exec();
 
-    if (!patientReminders || patientReminders.length === 0) {
-      return res.status(404).json({ message: "You have no reminders." });
+    if (!patientReminders) {
+      return res.status(404).json({ message: "Invalid patient ID" });
+    } else if (patientReminders.length === 0) {
+      return res.status(200).json({ message: "You have no reminder" });
     }
 
     res.status(200).json({ patientReminders });

@@ -1,4 +1,4 @@
-import { clientError, resourceNotFound } from "../../utils/returnError";
+const { clientError, resourceNotFound } = require("../../utils/returnError");
 
 const Patient = require("../../models/Patient");
 const { serverError } = require("../../utils/returnError");

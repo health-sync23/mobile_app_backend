@@ -60,7 +60,13 @@ const loginPatient = async (req, res) => {
         maxAge: 1000 * 60 * 60 * 10,
       });
 
-      res.status(200).json({ token: accessToken, message: "Login successful" });
+      res
+        .status(200)
+        .json({
+          token: accessToken,
+          message: "Login successful",
+          id: user._id,
+        });
     } catch (error) {
       console.log(error);
       serverError(res);

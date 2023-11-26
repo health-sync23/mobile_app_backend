@@ -15,6 +15,7 @@ const getAllPatients = async (req, res) => {
 
 const getPatientById = async (req, res) => {
   const { userId } = req.params;
+  console.log(userId);
   try {
     const user = await Patient.findOne({ _id: userId }).exec();
     if (!user) return resourceNotFound(res, "User not found!");

@@ -8,6 +8,6 @@ const {
 const router = express.Router();
 
 router.route("/").get(getAllPatients);
-router.route("/:id").get(getPatientById);
+router.route("/:userId").get(getPatientById);
 
 module.exports = router;

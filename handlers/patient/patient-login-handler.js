@@ -1,25 +1,34 @@
-const { clientError } = require("../../utils/returnError");
-
-const { serverError } = require("../../utils/returnError");
-
-const Patient = require("../../models/Patient");
-
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
+
+const { runEmailValidation } = require("../../utils/validation");
+
+const Patient = require("../../models/Patient");
 
 const loginPatient = async (req, res) => {
   // extract data from req body
   const { email, password } = req.body;
 
+  console.log(req.body);
+
   //   check if data is not empty
   if (!email || !password)
-    return clientError(res, "Enter your email AND password!");
+    return res.status(400).json({ message: "Enter your email AND password!" });
+  // make email lowercase incase and strip spaces
+  const cleanEmail = email.toLowerCase().trim();
+
+  const validMail = runEmailValidation(cleanEmail);
+
+  if (!validMail)
+    return res.status(400).json({ message: "invalid email format" });
+
+  console.log(validMail);
 
   // check if user exist in database
-  const user = await Patient.findOne({ email }).exec();
+  const user = await Patient.findOne({ email: cleanEmail }).exec();
 
   if (!user) {
-    return clientError(res, "User does not exist!");
+    return res.status(404).json({ message: "User does not exist!" });
   } else {
     try {
       // check if the provided password and the user password matches
@@ -60,16 +69,14 @@ const loginPatient = async (req, res) => {
         maxAge: 1000 * 60 * 60 * 10,
       });
 
-      res
-        .status(200)
-        .json({
-          token: accessToken,
-          message: "Login successful",
-          id: user._id,
-        });
+      res.status(200).json({
+        token: accessToken,
+        message: "Login successful!",
+        id: user._id,
+      });
     } catch (error) {
       console.log(error);
-      serverError(res);
+      res.status(500).json({ message: "Internal server error" });
     }
   }
 };

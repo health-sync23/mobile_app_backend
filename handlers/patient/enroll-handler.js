@@ -1,6 +1,9 @@
-const Patient = require("../../models/Patient");
+const {
+  runPasswordValidation,
+  runEmailValidation,
+} = require("../../utils/validation");
 
-const { clientError, serverError } = require("../../utils/returnError");
+const Patient = require("../../models/Patient");
 
 // const Patient = require("../models/Patient");
 const bcrypt = require("bcryptjs");
@@ -11,10 +14,25 @@ const enrollNewPatient = async (req, res) => {
 
   //   check if the correct data is being sent
   if (!fullname || !email || !password)
-    return clientError(res, "Important fields cannot be empty!");
+    return res
+      .status(400)
+      .json({ message: "Important fields cannot be empty!" });
+
+  const cleanEmail = email.toLowerCase().trim();
+
+  const correctEmailFormat = runEmailValidation(cleanEmail);
+  if (!correctEmailFormat)
+    return res.status(400).json({ message: "invalid email format" });
+
+  const correctPasswordFormat = runPasswordValidation(password);
+  if (!correctPasswordFormat)
+    return res.status(400).json({ message: "invalid password format" });
 
   //   check for email duplicate
-  const duplicateEmail = await Patient.findOne({ email }).exec();
+  const duplicateEmail = await Patient.findOne({
+    email: cleanEmail,
+  }).exec();
+
   if (duplicateEmail)
     return res.status(409).json({ message: "Email already exist!" });
 
@@ -25,7 +43,7 @@ const enrollNewPatient = async (req, res) => {
     // create patient object
     const newPatient = {
       fullname: fullname,
-      email: email,
+      email: cleanEmail,
       password: hashedPass,
       profile_pic: null,
       refreshToken: null,
@@ -35,13 +53,11 @@ const enrollNewPatient = async (req, res) => {
     await Patient.create(newPatient);
 
     // return success response
-    res
-      .status(201)
-      .json({ message: "New patient created successfully!", data: newPatient });
+    res.status(201).json({ message: "New patient created successfully!" });
   } catch (error) {
     // if there are any errors return error response
     console.log(error);
-    serverError(res);
+    res.status(500).json({ message: "Internal server error" });
   }
 };
 

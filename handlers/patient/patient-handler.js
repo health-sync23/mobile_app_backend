@@ -1,7 +1,4 @@
-const { clientError, resourceNotFound } = require("../../utils/returnError");
-
 const Patient = require("../../models/Patient");
-const { serverError } = require("../../utils/returnError");
 
 const getAllPatients = async (req, res) => {
   try {
@@ -9,7 +6,7 @@ const getAllPatients = async (req, res) => {
     res.status(200).json({ patients });
   } catch (error) {
     console.log(error);
-    serverError(res);
+    res.status(500).json({ message: "Internal server error" });
   }
 };
 
@@ -18,11 +15,11 @@ const getPatientById = async (req, res) => {
   console.log(userId);
   try {
     const user = await Patient.findOne({ _id: userId }).exec();
-    if (!user) return resourceNotFound(res, "User not found!");
+    if (!user) return res.status(404).json({ message: "User not found!" });
     res.status(200).json({ user });
   } catch (error) {
     console.log(error);
-    serverError(res);
+    res.status(500).json({ message: "Internal server error" });
   }
 };
 

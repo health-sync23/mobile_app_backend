@@ -10,8 +10,8 @@ function runEmailValidation(email) {
 }
 
 function runPasswordValidation(password) {
-  // Password must be at least 8 characters long and contain at least one uppercase letter.
-  const passwordRegex = /^(?=.*[A-Z])[A-Za-z\d!@#$%^&*()_+]{8,}$/;
+  // at least 5 characters long
+  const passwordRegex = /^[A-Za-z\d!@#$%^&*()_+]{5}$/;
 
   return passwordRegex.test(password);
 }

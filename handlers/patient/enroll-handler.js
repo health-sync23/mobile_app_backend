@@ -53,7 +53,10 @@ const enrollNewPatient = async (req, res) => {
     await Patient.create(newPatient);
 
     // return success response
-    res.status(201).json({ message: "New patient created successfully!" });
+    res.status(201).json({
+      message: "New patient created successfully!",
+      data: newPatient.fullname,
+    });
   } catch (error) {
     // if there are any errors return error response
     console.log(error);

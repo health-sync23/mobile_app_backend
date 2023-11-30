@@ -11,12 +11,10 @@ function runEmailValidation(email) {
 
 function runPasswordValidation(password) {
   // at least 5 characters long
-  const passwordRegex = /^[A-Za-z\d!@#$%^&*()_+]{5}$/;
+  const passwordRegex = /^[A-Za-z\d!@#$%^&*()_+]{5,}$/;
 
   return passwordRegex.test(password);
 }
-
-console.log(runPasswordValidation("Barnachea56"));
 
 module.exports = {
   runPasswordValidation,

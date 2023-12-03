@@ -37,10 +37,13 @@ const createReminder = async (req, res) => {
 
 const getPatientReminders = async (req, res) => {
   const loggedInUserId = req.user.userId;
-  const requestedUserId = req.params.id; // Assuming the user ID is in the URL parameters
+  const { userId } = req.params;
+
+  console.log(`logged: ${loggedInUserId}`);
+  console.log(`req: ${userId}`);
 
   // Validate that the logged-in user is the same as the requested user
-  if (loggedInUserId !== requestedUserId) {
+  if (loggedInUserId !== userId) {
     return res.status(403).json({
       message: "Access forbidden. You can only retrieve your own reminders.",
     });

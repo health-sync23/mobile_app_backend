@@ -1,6 +1,7 @@
 const jwt = require("jsonwebtoken");
 
 const verifyJWT = (req, res, next) => {
+  console.log("Middleware exec!");
   const authHeaders = req.headers["authorization"];
 
   if (!authHeaders) {
@@ -15,6 +16,7 @@ const verifyJWT = (req, res, next) => {
     }
 
     req.user = { userId: decode.userId };
+
     next();
   });
 };

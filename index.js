@@ -22,7 +22,7 @@ app.use(requestLogger);
 app.use(express.urlencoded({ extended: false }));
 app.use(express.json());
 app.use(cookieParser());
-app.use(cors({ origin: true }));
+app.use(cors({ origin: true, credentials: true }));
 
 // endpoints
 app.use("/", require("./routes/root"));

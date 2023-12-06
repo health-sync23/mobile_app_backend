@@ -8,10 +8,12 @@ const createReminder = async (req, res) => {
   const { userId } = req.user;
 
   if (!drugName || !drugType || !dosage || !frequency || !time || !note)
-    return clientError(res, "Important fields cannot be empty!");
+    return res
+      .status(400)
+      .json({ message: "Important fields cannot be empty!" });
 
   const user = await Patient.findOne({ _id: userId });
-  if (!user) return resourceNotFound(res, "Invalid user ID!");
+  if (!user) return res.status(404).json({ message: "User not found!" });
 
   try {
     const newReminder = {
@@ -31,7 +33,7 @@ const createReminder = async (req, res) => {
       .json({ message: `New drug ${drugName} alert created successfully!` });
   } catch (error) {
     console.log(error);
-    serverError(res);
+    res.status(500).json({ message: "An error occured!" });
   }
 };
 
@@ -63,7 +65,7 @@ const getPatientReminders = async (req, res) => {
     res.status(200).json({ patientReminders });
   } catch (error) {
     console.log(error);
-    serverError(res);
+    res.status(500).json({ message: "An error occured!" });
   }
 };
 
@@ -78,7 +80,7 @@ const getAllReminders = async (req, res) => {
     }
   } catch (error) {
     console.log(error);
-    serverError(res);
+    res.status(500).json({ message: "An error occured!" });
   }
 };
 

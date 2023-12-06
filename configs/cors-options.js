@@ -10,6 +10,7 @@ const corsOptions = {
   },
   optionsSuccessStatus: 200,
   exposedHeaders: ["Access-Control-Allow-Origin"],
+  credentials: true,
 };
 
 module.exports = { corsOptions };

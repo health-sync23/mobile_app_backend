@@ -1,3 +1,5 @@
+const { corsOptions } = require("./configs/cors-options");
+
 const mongoose = require("mongoose");
 const express = require("express");
 require("dotenv").config();
@@ -22,7 +24,7 @@ app.use(requestLogger);
 app.use(express.urlencoded({ extended: false }));
 app.use(express.json());
 app.use(cookieParser());
-app.use(cors({ origin: true, credentials: true }));
+app.use(cors(corsOptions));
 
 // endpoints
 app.use("/", require("./routes/root"));
